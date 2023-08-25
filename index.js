@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+// const  cluster = require("cluster");
 
 require('dotenv').config();
 
@@ -18,10 +19,18 @@ app.use("/signup",validateInputData,signUpRouter);
 app.use("/login",validateInputData,logInRouter);
 app.use("/user",validateToken,userRouter);
 
+app.get("/:hash",(req,res)=>{
+
+});
+
+
+
 
 app.listen(3000,async ()=>{
     console.log("Listening on port: 3000");
    await mongoose.connect(process.env.MONGO_URI,{dbName: "Url-Shortener",});
 });
 
-module.exports = app;
+
+//For test
+// module.exports = app;

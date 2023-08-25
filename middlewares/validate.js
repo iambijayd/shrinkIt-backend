@@ -18,7 +18,8 @@ function validateToken(req,res,next){
     const token = (req.cookies?.__auth_token);
     console.log(token);
     try{
-        verifyToken(token);
+        let decodedData = verifyToken(token);
+        req.userData = decodedData;
         next();
     }catch(err){
         console.log(err);

@@ -1,6 +1,8 @@
 const {User} = require("../models/users");
 const {generateToken} = require("../service/auth");
 
+let userInfoMap = new Map();
+
 
 async function handleSignUp(req, res) {
     let userData = req.body;
@@ -8,8 +10,10 @@ async function handleSignUp(req, res) {
         await User.create({
             email: userData.email,
             password: userData.password,
+            urls: []
         });
         let userToken = generateToken(userData);
+        userInfoMap.set(userData.email,userData);
         res.cookie("__auth_token",userToken,{maxAge: 3600000,httpOnly: true});
         return res.status(201).json({success: "SignUp Successful"});
     }catch(err){
@@ -27,7 +31,7 @@ async function handleLogIn(req, res) {
     }else{
         let userToken = generateToken(req.body);
         res.cookie("__auth_token",userToken,{maxAge: 3600000,httpOnly: true});
-        res.status(200).json({message: "LoggedIn Successfully",user});
+        res.status(200).json({message: "LoggedIn Successfully"});
     }
 }
 
